@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a6ef618449ecfb41b7f9efffba8de1b, type: 3}
+  m_Name: DesertEnv
+  m_EditorClassIdentifier: 
+  Density: 20
+  Variance: 20
+  EntitySpawn:
+  - Prefab: {fileID: 7040452427832017335, guid: 1f90e4e71dd2f0f40bf940cd2c1a65cb, type: 3}
+    Probability: 2
+  - Prefab: {fileID: 5007265615999521550, guid: f30ee2a7a65b60b4d8f93ddc470f53c4, type: 3}
+    Probability: 1
+  - Prefab: {fileID: 5473193963595754087, guid: 8a50a1c99f7dd8d4794e82f1d82b622b, type: 3}
+    Probability: 1
+  - Prefab: {fileID: 157019468213573531, guid: 710d3ca06efc36044a82515eb32ab14e, type: 3}
+    Probability: 0.25
+  - Prefab: {fileID: 319391391079734782, guid: 6ebe51e383782634e8e7e24c794c4b61, type: 3}
+    Probability: 0.25

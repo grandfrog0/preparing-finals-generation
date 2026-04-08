@@ -47,7 +47,27 @@ public class Voronoi : MonoBehaviour
             poly = ClipPolygon(poly, middle, direction);
         }
 
-        Debug.Log(poly.ToSeparatedString("; "));
+        CreateMesh(center, poly);
+    }
+
+    private void CreateMesh(Vector2 center, List<Vector2> poly)
+    {
+        GameObject obj = new GameObject("Cell");
+        MeshFilter mf = obj.AddComponent<MeshFilter>();
+
+        Vector3[] verts = new Vector3[poly.Count + 1];
+        int[] tris = new int[poly.Count * 3];
+        verts[0] = new Vector3(center.x, 0, center.y);
+
+        for (int i = 0; i < poly.Count; i++)
+        {
+            verts[i + 1] = new Vector3(poly[i].x, 0, poly[i].y);
+            tris[i * 3] = 0;
+            tris[i * 3 + 1] = i + 1;
+            tris[i * 3 + 2] = (i + 1 == poly.Count) ? 1 : i + 2;
+        }
+
+        mf.mesh = new Mesh { vertices = verts, triangles = tris };
     }
 
     private List<Vector2> ClipPolygon(List<Vector2> points, Vector2 planePoint, Vector2 planeNormal)
