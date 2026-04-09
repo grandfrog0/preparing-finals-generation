@@ -367,9 +367,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4782f8773d4f2d54d9f7852d049566f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BiomeData: {fileID: 11400000, guid: 7a1a669bb7eae7f47969fbfdb07b2380, type: 2}
+  BiomeData: {fileID: 11400000, guid: 7476d302036586d46a4ef79b6635cb0d, type: 2}
   Iterations: 1000
   _zoneCollider: {fileID: 2007101298}
+  _floorMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &1346440111
 GameObject:
   m_ObjectHideFlags: 0
@@ -511,12 +514,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 0.61012167, z: 1}
+  m_Center: {x: 0, y: -0.1949425, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

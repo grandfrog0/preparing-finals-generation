@@ -10,6 +10,7 @@ public class BiomeGenerator : MonoBehaviour
     public int Iterations = 1000;
 
     [SerializeField] Collider _zoneCollider;
+    [SerializeField] LayerMask _floorMask;
     private int _seed;
 
     private HashSet<GameObject> _spawnedObjects = new();
@@ -84,12 +85,12 @@ public class BiomeGenerator : MonoBehaviour
 
             Vector3 pos = new Vector3(
                 Random.Range(min.x, max.x),
-                _zoneCollider.bounds.center.y,
+                max.y,
                 Random.Range(min.z, max.z)
             );
 
-            Debug.Log((pos, Vector3.down, _zoneCollider.bounds.extents.y, ~0, QueryTriggerInteraction.Ignore, Physics.Raycast(pos, Vector3.down, out _, _zoneCollider.bounds.extents.y, ~0, QueryTriggerInteraction.Ignore)));
-            if (Physics.Raycast(pos, Vector3.down, out RaycastHit hit, _zoneCollider.bounds.extents.y, ~0, QueryTriggerInteraction.Ignore))
+            Debug.Log((pos, Vector3.down, _zoneCollider.bounds.extents.y, _floorMask, Physics.Raycast(pos, Vector3.down, out _, _zoneCollider.bounds.extents.y, _floorMask)));
+            if (Physics.Raycast(pos, Vector3.down, out RaycastHit hit, _zoneCollider.bounds.size.y + 0.5f, _floorMask))
             {
                 pos = hit.point;
 
@@ -98,6 +99,7 @@ public class BiomeGenerator : MonoBehaviour
                 float groupSize = 0.25f;
                 float collidingSize = 0.25f;
 
+                Debug.Log((pos, !HasAnyNearby(pos, collidingSize), collidingSize, IsFitDensity(pos, densityDistance, size), densityDistance, size));
                 if (!HasAnyNearby(pos, collidingSize) && IsFitDensity(pos, densityDistance, size))
                 {
                     GameObject obj = Instantiate(prefab, parent);
@@ -117,6 +119,6 @@ public class BiomeGenerator : MonoBehaviour
 
     private bool IsFitDensity(Vector3 pos, float densityDistance, float size)
     {
-        return _spawnedBiomeObjects.Any(x => Vector3.Distance(x.transform.position, pos) <= densityDistance);
+        return _spawnedBiomeObjects.All(x => Vector3.Distance(x.transform.position, pos) > densityDistance);
     }
 }
