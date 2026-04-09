@@ -10,7 +10,7 @@ public class WorldGenerator : MonoBehaviour
 
     public Biomes AvailableBiomes;
 
-    private void Awake()
+    private void Start()
     {
         Generate();
     }
