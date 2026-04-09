@@ -1,34 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BiomeGenerator : MonoBehaviour
 {
-    public BiomeData BiomeData;
     public int Iterations = 1000;
 
-    [SerializeField] Collider _zoneCollider;
     [SerializeField] LayerMask _floorMask;
+    private BiomeData _biomeData;
+    private Collider _zoneCollider;
     private int _seed;
+
+    private Dictionary<Collider, BiomeData> _biomes;
 
     private HashSet<GameObject> _spawnedObjects = new();
     private HashSet<GameObject> _spawnedBiomeObjects = new();
 
-    private void Start()
+    public void Generate(Biomes availableBiomes, HashSet<Collider> colliders, out Dictionary<Collider, BiomeData> biomes)
     {
-        LoadWorld();
-    }
-
-    public void LoadWorld()
-    {
-        //if (has not save)
-        GenerateWorld();
-    }
-
-    public void GenerateWorld()
-    {
+        biomes = colliders.ToDictionary(x => x, x => availableBiomes.GetRandomBiome());
+        _biomes = biomes;
         GenerateWorld(Random.Range(int.MinValue, int.MaxValue));
     }
 
@@ -38,6 +30,7 @@ public class BiomeGenerator : MonoBehaviour
         Random.InitState(seed);
 
         ClearBiomeObjects();
+
         GenerateObjects();
     }
 
@@ -54,13 +47,23 @@ public class BiomeGenerator : MonoBehaviour
 
     public void GenerateObjects()
     {
-        for (int i = 0; i < BiomeData.SpawnDatas.Count; i++)
-        {
-            SpawnBiomeGroup(BiomeData.SpawnDatas[i], i);
-        }
+        StartCoroutine(GenerateObjectsRoutine());
     }
 
-    private void SpawnBiomeGroup(BiomeSpawnData data, int index)
+    private IEnumerator GenerateObjectsRoutine()
+    {
+        foreach ((Collider zone, BiomeData biome) in _biomes)
+        {
+            _zoneCollider = zone;
+            _biomeData = biome;
+
+            for (int i = 0; i < _biomeData.SpawnDatas.Count; i++)
+            {
+                yield return StartCoroutine(SpawnBiomeGroupRoutine(_biomeData.SpawnDatas[i], i));
+            }
+        }
+    }
+    private IEnumerator SpawnBiomeGroupRoutine(BiomeSpawnData data, int index)
     {
         Random.InitState(_seed + index);
         _spawnedBiomeObjects.Clear();
@@ -80,17 +83,16 @@ public class BiomeGenerator : MonoBehaviour
         {
             if (_spawnedBiomeObjects.Count > spawnMax)
             {
-                return;
+                yield break;
             }
 
             Vector3 pos = new Vector3(
                 Random.Range(min.x, max.x),
-                max.y,
+                max.y + 2,
                 Random.Range(min.z, max.z)
             );
 
-            Debug.Log((pos, Vector3.down, _zoneCollider.bounds.extents.y, _floorMask, Physics.Raycast(pos, Vector3.down, out _, _zoneCollider.bounds.extents.y, _floorMask)));
-            if (Physics.Raycast(pos, Vector3.down, out RaycastHit hit, _zoneCollider.bounds.size.y + 0.5f, _floorMask))
+            if (Physics.Raycast(pos, Vector3.down, out RaycastHit hit, _zoneCollider.bounds.size.y + 0.5f, _floorMask) && hit.collider == _zoneCollider)
             {
                 pos = hit.point;
 
@@ -99,7 +101,6 @@ public class BiomeGenerator : MonoBehaviour
                 float groupSize = 0.25f;
                 float collidingSize = 0.25f;
 
-                Debug.Log((pos, !HasAnyNearby(pos, collidingSize), collidingSize, IsFitDensity(pos, densityDistance, size), densityDistance, size));
                 if (!HasAnyNearby(pos, collidingSize) && IsFitDensity(pos, densityDistance, size))
                 {
                     GameObject obj = Instantiate(prefab, parent);
@@ -108,6 +109,11 @@ public class BiomeGenerator : MonoBehaviour
                     _spawnedObjects.Add(obj);
                     _spawnedBiomeObjects.Add(obj);
                 }
+            }
+
+            if (i % 100 == 0)
+            {
+                yield return null;
             }
         }
     }

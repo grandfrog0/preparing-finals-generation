@@ -8,5 +8,7 @@ public class BiomeData : ScriptableObject
     public string ID;
     public float Probability;
 
+    public int TerrainLayer;
+
     public List<BiomeSpawnData> SpawnDatas;
 }

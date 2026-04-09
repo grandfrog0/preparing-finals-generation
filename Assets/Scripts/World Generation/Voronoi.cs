@@ -7,27 +7,28 @@ public class Voronoi : MonoBehaviour
 {
     [SerializeField] float _mapSize = 200;
     [SerializeField] int _pointCount = 100;
+    private int _meshLayer;
 
-    private void Start()
+    public void Generate(out HashSet<Collider> meshColliders)
     {
-        Generate();
-    }
+        _meshLayer = LayerMask.NameToLayer("BiomeCollider");
 
-    private void Generate()
-    {
         Vector2[] sites = new Vector2[_pointCount];
         for (int i = 0; i < _pointCount; i++)
         {
             sites[i] = new Vector2(Random.Range(-_mapSize, _mapSize), Random.Range(-_mapSize, _mapSize));
         }
 
+        MeshCollider meshCollider;
+        meshColliders = new();
         foreach (Vector2 site in sites)
         {
-            CreateCell(site, sites);
+            CreateCell(site, sites, out meshCollider);
+            meshColliders.Add(meshCollider);
         }
     }
 
-    private void CreateCell(Vector2 center, Vector2[] sites)
+    private void CreateCell(Vector2 center, Vector2[] sites, out MeshCollider meshCollider)
     {
         List<Vector2> poly = new List<Vector2>() { 
             new Vector2(-_mapSize, -_mapSize), new Vector2(_mapSize, -_mapSize),
@@ -47,27 +48,71 @@ public class Voronoi : MonoBehaviour
             poly = ClipPolygon(poly, middle, direction);
         }
 
-        CreateMesh(center, poly);
+        CreateMesh(center, poly, out meshCollider);
     }
 
-    private void CreateMesh(Vector2 center, List<Vector2> poly)
+    private void CreateMesh(Vector2 center, List<Vector2> poly, out MeshCollider meshCollider)
     {
+        float height = 5.0f;
         GameObject obj = new GameObject("Cell");
+        obj.transform.Translate(0, -height, 0);
         MeshFilter mf = obj.AddComponent<MeshFilter>();
 
-        Vector3[] verts = new Vector3[poly.Count + 1];
-        int[] tris = new int[poly.Count * 3];
-        verts[0] = new Vector3(center.x, 0, center.y);
+        int c = poly.Count;
+        Vector3[] verts = new Vector3[(c + 1) * 2];
+        int[] tris = new int[c * 12];
 
-        for (int i = 0; i < poly.Count; i++)
+        verts[0] = new Vector3(center.x, 0, center.y);
+        verts[c + 1] = new Vector3(center.x, height, center.y);
+
+        for (int i = 0; i < c; i++)
         {
             verts[i + 1] = new Vector3(poly[i].x, 0, poly[i].y);
-            tris[i * 3] = 0;
-            tris[i * 3 + 1] = i + 1;
-            tris[i * 3 + 2] = (i + 1 == poly.Count) ? 1 : i + 2;
+            verts[i + c + 2] = new Vector3(poly[i].x, height, poly[i].y);
         }
 
-        mf.mesh = new Mesh { vertices = verts, triangles = tris };
+        for (int i = 0; i < c; i++)
+        {
+            // Следующая точка в кольце
+            int next = (i + 1 == c) ? 1 : i + 2;
+
+            // Нижняя грань
+            tris[i * 3] = 0;
+            tris[i * 3 + 1] = i + 1;
+            tris[i * 3 + 2] = next;
+
+            // Верхняя грань
+            int offsetTop = c * 3;
+            tris[offsetTop + i * 3] = c + 1;
+            tris[offsetTop + i * 3 + 1] = next + c + 1;
+            tris[offsetTop + i * 3 + 2] = i + 1 + c + 1;
+
+            // Боковые грани (два треугольника на одну сторону)
+            int offsetSides = c * 6 + i * 6;
+            int b1 = i + 1;           // bottom current
+            int b2 = next;            // bottom next
+            int t1 = i + 1 + c + 1;   // top current
+            int t2 = next + c + 1;    // top next
+
+            // Первый треугольник стенки
+            tris[offsetSides] = b1;
+            tris[offsetSides + 1] = t1;
+            tris[offsetSides + 2] = b2;
+
+            // Второй треугольник стенки
+            tris[offsetSides + 3] = b2;
+            tris[offsetSides + 4] = t1;
+            tris[offsetSides + 5] = t2;
+        }
+
+        Mesh mesh = new Mesh { vertices = verts, triangles = tris };
+        //mesh.RecalculateNormals();
+
+        mf.mesh = mesh;
+        meshCollider = obj.AddComponent<MeshCollider>();
+        meshCollider.convex = true;
+
+        obj.layer = _meshLayer;
     }
 
     private List<Vector2> ClipPolygon(List<Vector2> points, Vector2 planePoint, Vector2 planeNormal)

@@ -9,11 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c78415cd423a874b8be07c1b117114a, type: 3}
-  m_Name: Plains
+  m_Script: {fileID: 11500000, guid: db1b16f64be8a39478874917b29e3232, type: 3}
+  m_Name: AvailableBiomes
   m_EditorClassIdentifier: 
-  ID: Desert
-  Probability: 3
-  SpawnDatas:
-  - {fileID: 11400000, guid: 1aa0de9fcc0e1d8409c2f831abbb4c7e, type: 2}
-  - {fileID: 11400000, guid: 500c3ec5d78886243bfd121b409d0a6f, type: 2}
+  AvailableBiomes:
+  - {fileID: 11400000, guid: 7a1a669bb7eae7f47969fbfdb07b2380, type: 2}
+  - {fileID: 11400000, guid: 7476d302036586d46a4ef79b6635cb0d, type: 2}
