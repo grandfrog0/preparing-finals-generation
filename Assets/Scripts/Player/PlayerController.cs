@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     {
         Quaternion rot = Quaternion.Euler(0, _cameraTransform.eulerAngles.y, 0);
         Vector3 axis = rot * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * _movementSpeed;
+        axis.y = _rigidbody.velocity.y;
 
         _rigidbody.velocity = axis;
 

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TerrainGenerator : MonoBehaviour
 {
+    public Vector3 WorldSize => _terrain.terrainData.size;
     [SerializeField] Terrain _terrain;
     [SerializeField] LayerMask _floorMask;
     private Dictionary<Collider, BiomeData> _biomes;

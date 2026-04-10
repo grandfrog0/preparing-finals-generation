@@ -52,6 +52,7 @@ public class BiomeGenerator : MonoBehaviour
 
     private IEnumerator GenerateObjectsRoutine()
     {
+        float biomeIndex = 0;
         foreach ((Collider zone, BiomeData biome) in _biomes)
         {
             _zoneCollider = zone;
@@ -61,6 +62,9 @@ public class BiomeGenerator : MonoBehaviour
             {
                 yield return StartCoroutine(SpawnBiomeGroupRoutine(_biomeData.SpawnDatas[i], i));
             }
+
+            biomeIndex++;
+            Debug.Log($"Сгенерировано {(biomeIndex / _biomes.Count):P2}");
         }
     }
     private IEnumerator SpawnBiomeGroupRoutine(BiomeSpawnData data, int index)

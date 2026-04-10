@@ -9,6 +9,8 @@ public class Voronoi : MonoBehaviour
     [SerializeField] int _pointCount = 100;
     private int _meshLayer;
 
+    public float MapSize => _mapSize;
+
     public void Generate(out HashSet<Collider> meshColliders)
     {
         _meshLayer = LayerMask.NameToLayer("BiomeCollider");

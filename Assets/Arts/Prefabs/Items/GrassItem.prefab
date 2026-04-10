@@ -24,12 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6350820701994424022}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.6471859, y: -0.2848691, z: 0.28486896, w: 0.64718604}
   m_LocalPosition: {x: -0.023242319, y: 0.0116211595, z: -0.014526449}
   m_LocalScale: {x: 0.9624044, y: 0.4193266, z: 0.4521153}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6350820702034539630}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 90.00001, y: 0, z: 47.515003}
 --- !u!212 &6350820701994424020
 SpriteRenderer:
@@ -42,10 +43,12 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -91,9 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6350820702034539630}
   - component: {fileID: 6350820702034539625}
-  - component: {fileID: 6350820702034539624}
-  - component: {fileID: 6350820702034539627}
-  - component: {fileID: 6350820702034539626}
+  - component: {fileID: 6730314071542176603}
   m_Layer: 0
   m_Name: GrassItem
   m_TagString: Untagged
@@ -108,14 +109,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6350820702034578325}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 397705555053467272}
   - {fileID: 6350820701994424023}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &6350820702034539625
 SphereCollider:
@@ -125,71 +127,50 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6350820702034578325}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 1
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0.25, z: 0}
---- !u!114 &6350820702034539624
-MonoBehaviour:
+--- !u!205 &6730314071542176603
+LODGroup:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6350820702034578325}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0, y: 0, z: 0}
+  m_Size: 1
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.027214967
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 397705555051566184}
+  - screenRelativeHeight: 0
+    fadeTransitionWidth: 0
+    renderers: []
+  - screenRelativeHeight: 0
+    fadeTransitionWidth: 0
+    renderers: []
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82c292dfc5f376245a884569edf687d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 0
-  use_range: 1
-  actions: []
-  groups: []
-  active_range: 30
-  always_run_scripts: 0
-  outline: {fileID: 6350820701994424022}
-  generate_outline: 1
-  outline_material: {fileID: 2100000, guid: 87b42a05f4ec13f439ad92fca183c44f, type: 2}
-  dont_optimize: 0
---- !u!114 &6350820702034539627
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6350820702034578325}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28c5629aee9d11b4c89c7dc94f7c0329, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 2a498b4f16a2b81459327a397e98c4a5, type: 2}
-  quantity: 1
-  auto_collect_range: 0
-  snap_to_ground: 1
-  take_audio: {fileID: 8300000, guid: c26bb97f4ba0c7b4bafdf9603ecf8d56, type: 3}
-  take_fx: {fileID: 771872157719671656, guid: d60c5c6c5a1ef4d4cb2c550bb13512cb, type: 3}
-  was_spawned: 0
---- !u!114 &6350820702034539626
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6350820702034578325}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 618916fba16ddd54492a1fec64610e03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  uid_prefix: grass_
-  unique_id: 
 --- !u!1001 &397705555053857800
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6350820702034539630}
     m_Modifications:
     - target: {fileID: 100000, guid: 0ca2fb1c004ff1a47b43ed6033cff1dc, type: 3}
@@ -257,10 +238,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 103019f3c5dcc9e4785e5f3a983a350b, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ca2fb1c004ff1a47b43ed6033cff1dc, type: 3}
+--- !u!23 &397705555051566184 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2300000, guid: 0ca2fb1c004ff1a47b43ed6033cff1dc, type: 3}
+  m_PrefabInstance: {fileID: 397705555053857800}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &397705555053467272 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 400000, guid: 0ca2fb1c004ff1a47b43ed6033cff1dc,
-    type: 3}
+  m_CorrespondingSourceObject: {fileID: 400000, guid: 0ca2fb1c004ff1a47b43ed6033cff1dc, type: 3}
   m_PrefabInstance: {fileID: 397705555053857800}
   m_PrefabAsset: {fileID: 0}
