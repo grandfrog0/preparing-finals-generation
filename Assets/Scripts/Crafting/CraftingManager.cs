@@ -8,7 +8,7 @@ public class CraftingManager : MonoBehaviour
     [SerializeField] CraftingConfig _config;
     [SerializeField] InventoryManager _inventoryManager;
 
-    private void Awake()
+    private void Start()
     {
         foreach (CraftReceipt receipt in _config.AvailableReceipts)
         {

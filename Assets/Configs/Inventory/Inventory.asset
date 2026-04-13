@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Items:
   - Name: stick
-    Count: 1
+    Count: 10
   - Name: thread
     Count: 0
   - Name: watermelon

@@ -1,0 +1,12 @@
+{
+    "Items": [
+        {
+            "Key": "test1",
+            "Value": "Test text 1"
+        },
+        {
+            "Key": "test2",
+            "Value": "One more text (English)"
+        }
+    ]
+}

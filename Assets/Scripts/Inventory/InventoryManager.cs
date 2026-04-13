@@ -11,7 +11,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] InventoryConfig _inventoryConfig;
     private List<ItemElement> Items => _inventoryConfig.Items;
 
-    private void Start()
+    private void Awake()
     {
         OnItemCountChanged.AddListener((n, c) => Debug.Log((n, c)));
     }
